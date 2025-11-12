@@ -1,11 +1,9 @@
 package Usuarios;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
-import Eventos.Evento;
 import Eventos.Finanzas;
-import Eventos.Venue;
+import Logs.LogSystem;
 import Tiquetes.Tiquete_individual;
 
 public class Administrador extends Usuario {
@@ -27,5 +25,22 @@ public class Administrador extends Usuario {
 	        Objects.requireNonNull(finanzas, "finanzas");
 	        return finanzas.calcularGananciasTiquetera(); 
 	 }
+	 public void activarLogs() {
+	        LogSystem.activarLogs();
+	        System.out.println("[ADMIN] Has activado los logs ");
+	    }
+
+	 public void bloquearLogs() {
+	        LogSystem.bloquearLogs();
+	        System.out.println("[ADMIN] Has bloqueado los logs ");
+	    }
+
+	 public void verEstadoLogs() {
+	        if (LogSystem.estaActivo()) {
+	            System.out.println("[ADMIN] Los logs están ACTIVOS ");
+	        } else {
+	            System.out.println("[ADMIN] Los logs están BLOQUEADOS ");
+	        }
+	    }
 
 }

@@ -1,10 +1,11 @@
 package Tiquetes;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class Venta {
 
-	private double cobroTotal;
+    private double cobroTotal;
     private String tipoPago;
     private LocalDateTime fechaPago;
     private String estado;

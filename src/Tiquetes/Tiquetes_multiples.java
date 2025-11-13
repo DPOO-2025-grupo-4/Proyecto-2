@@ -28,4 +28,18 @@ public class Tiquetes_multiples extends Tiquete_individual {
             }
         }
     }
+    public int getCantidad() {
+        return (tiquetes == null ? 0 : tiquetes.size());
+    }
+    public double getPrecioTotal() {
+        double total = 0;
+        if (tiquetes != null) {
+            for (Tiquete_individual t : tiquetes) {
+                total += t.getPrecio();
+            }
+        }
+        return total;
+    }
+
+
 }

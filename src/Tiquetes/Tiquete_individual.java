@@ -3,9 +3,9 @@ package Tiquetes;
 import Eventos.Evento;
 import Usuarios.Usuario;
 
-public class Tiquete_individual{
+public class Tiquete_individual {
 
-	protected Evento evento;
+    protected Evento evento;
     protected double precio;
     protected double cargoServicio;
     protected double cuotaFija;
@@ -15,9 +15,9 @@ public class Tiquete_individual{
     private boolean reembolsado;
     private double montoReembolsado;
     private Usuario duenoActual;
-    
+
     public Tiquete_individual(Evento evento, double precio, double cargoServicio, double cuotaFija,
-                   String id, boolean transferible, String numAsiento) {
+                              String id, boolean transferible, String numAsiento) {
         this.evento = evento;
         this.precio = precio;
         this.cargoServicio = cargoServicio;
@@ -25,8 +25,11 @@ public class Tiquete_individual{
         this.id = id;
         this.transferible = transferible;
         this.numAsiento = numAsiento;
-        
+        this.reembolsado = false;
+        this.montoReembolsado = 0;
+        this.duenoActual = null;
     }
+
     public void autorizarReembolso(double monto) {
         if (reembolsado) {
             throw new IllegalStateException("Este tiquete ya fue reembolsado previamente");
@@ -44,14 +47,6 @@ public class Tiquete_individual{
 
     public double getPrecio() { return precio; }
     public void setPrecio(double precio) { this.precio = precio; }
-    
-    public Usuario getDuenoActual() {
-        return duenoActual;
-    }
-
-    public void setDuenoActual(Usuario duenoActual) {
-        this.duenoActual = duenoActual;
-    }
 
     public double getCargoServicio() { return cargoServicio; }
     public void setCargoServicio(double cargoServicio) { this.cargoServicio = cargoServicio; }
@@ -68,8 +63,14 @@ public class Tiquete_individual{
     public String getNumAsiento() { return numAsiento; }
     public void setNumAsiento(String numAsiento) { this.numAsiento = numAsiento; }
 
+    public Usuario getDuenoActual() { return duenoActual; }
+    public void setDuenoActual(Usuario duenoActual) { this.duenoActual = duenoActual; }
+
     public void mostrarInfoTiquete() {
-        System.out.println("Tiquete ID: " + id + " | Evento: " + evento.getTipoEvento() +
-                           " | Precio: " + precio + " | Asiento: " + numAsiento);
+        String tipoEvento = (evento != null ? evento.getTipoEvento() : "Sin evento");
+        System.out.println("Tiquete ID: " + id
+                + " | Evento: " + tipoEvento
+                + " | Precio: " + precio
+                + " | Asiento: " + numAsiento);
     }
 }

@@ -1,7 +1,7 @@
 package Usuarios;
 import java.time.LocalDateTime;
 import java.util.Objects;
-
+import Usuarios.RepositorioUsuarios;
 
 
 
@@ -13,20 +13,23 @@ protected String login;
 protected String password;
 protected double saldo;
 protected  LocalDateTime fechaRegistro;
+protected String rol;
+private RepositorioUsuarios repo;
 
-public Usuario (String id, String nombre, String email, String login, String password, double saldo) {
+public Usuario (String id, String nombre, String email, String login, String password, double saldo, String rol) {
 	this.nombre=Objects.requireNonNull(nombre,"nombre");
 	this.email=Objects.requireNonNull(email,"email");
 	this.login=Objects.requireNonNull(login,"login");
 	this.password=Objects.requireNonNull(password,"password");
 	this.saldo= saldo;
 	this.fechaRegistro= LocalDateTime.now();
-
-}
-public boolean autenticar(String login, String password) {
-	return Objects.equals(this.login, login) && Objects.equals(this.password, password);
+	this.rol = rol;
+	guardarEnRepo();
 }
 
+public void guardarEnRepo() {
+	
+}
 public void acreditarSaldo(double monto) {
 	if(monto<=0) throw new IllegalArgumentException("El monto debe ser positivo y mayor a cero");
 	this.saldo+= monto;
@@ -35,9 +38,6 @@ public void debitarSaldo(double monto) {
 	if (monto <= 0) throw new IllegalArgumentException("Monto debe ser positivo");
 	if (monto > this.saldo) throw new IllegalStateException("Saldo insuficiente");
 	this.saldo -= monto;
-}
-public boolean esAdmin() {
-    return false;
 }
 public String getId() {
 	return id;
@@ -74,6 +74,9 @@ public String getPassword() {
 }
 public void setPassword(String password) {
 	this.password = password;
+}
+public String getRol() {
+	return rol;
 }
 
 }

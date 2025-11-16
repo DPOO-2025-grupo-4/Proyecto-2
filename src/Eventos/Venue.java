@@ -10,9 +10,10 @@ public class Venue {
 	private int idVenue;
 	private Evento eventoAsociado;
 	private static int idSecuencial = 1;
+	private String estado;
 	
 	public Venue(String tipoVenue, int latitud, int longitud, int capacidadMaxima,
-			String restriccionesUso, String nombre) throws Exception {
+			String restriccionesUso, String nombre, String estado) throws Exception {
 			this.tipoVenue = tipoVenue;
 			this.latitud = latitud;
 			this.longitud = longitud;
@@ -25,16 +26,12 @@ public class Venue {
 			
 			this.restriccionesUso = restriccionesUso;
 			this.nombreVenue = nombre;
+			this.estado = estado;
 			idVenue = idSecuencial;
 			idSecuencial ++;
 	}
-
-	public boolean Asignar(Evento evento) {
-		if (this.eventoAsociado != null) {
-			return false; // ya ocupado
-		}
-		this.eventoAsociado = evento;
-		return true;
+	public String getEstado() {
+		return estado;
 	}
 	public void liberarEvento() {
 		eventoAsociado = null;

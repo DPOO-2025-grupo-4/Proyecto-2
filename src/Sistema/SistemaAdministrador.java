@@ -19,11 +19,11 @@ public class SistemaAdministrador extends SubSistema {
         int opcion = -1;
 
         do {
-            System.out.println("\n=== MENÚ ADMINISTRADOR ===");
-            System.out.println("1. Crear evento");
-            System.out.println("2. Cancelar evento");
-            System.out.println("3. Ver finanzas generales");
-            System.out.println("4. Autorizar reembolso");
+            System.out.println("MENÚ ADMINISTRADOR");
+            System.out.println("1. Cancelar evento");
+            System.out.println("2. Ver finanzas generales");
+            System.out.println("3. Autorizar reembolso");
+            System.out.println("4. AprobarVenue");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
             
@@ -31,10 +31,10 @@ public class SistemaAdministrador extends SubSistema {
             sc.nextLine(); 
 
             switch (opcion) {
-                case 1 -> crearEvento();
-                case 2 -> cancelarEvento();
-                case 3 -> verFinanzas();
-                case 4 -> ejecutarAutorizarReembolso();
+                case 1 -> cancelarEvento();
+                case 2 -> verFinanzas();
+                case 3 -> ejecutarAutorizarReembolso();
+                case 4 -> aprobarVenue();
                 case 0 -> System.out.println("Saliendo del sistema de administración...");
                 default -> System.out.println("Opción inválida.");
             }
@@ -42,16 +42,16 @@ public class SistemaAdministrador extends SubSistema {
         } while (opcion != 0);
     }
 
-    private void crearEvento() {
-        System.out.println("→ Creando evento (simulación)...");
-    }
 
     private void cancelarEvento() {
-        System.out.println("→ Cancelando evento (simulación)...");
+        System.out.println("→ Cancelando evento...");
     }
 
     private void verFinanzas() {
         System.out.println("→ Mostrando reporte de finanzas...");
+    }
+    private void aprobarVenue() {
+    	
     }
 
   

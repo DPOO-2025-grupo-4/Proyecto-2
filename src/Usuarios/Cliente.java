@@ -12,7 +12,7 @@ private String telefono;
 private final Set<Tiquete_individual> tiquetes= new HashSet<>();
 
 public Cliente (String id, String nombre, String email, String login, String password, double saldo,String documento, String telefono) {
-	super(id,nombre,email,login,password,saldo);
+	super(id,nombre,email,login,password,saldo, "CLIENTE");
 	this.documento=Objects.requireNonNull(documento,"documento");
 	this.telefono=Objects.requireNonNull(telefono,"telefono");
 }

@@ -17,7 +17,7 @@ private int reputacion;
 private String nit;
 
 public Promotor(String id, String nombre, String email, String login, String password, double saldo,int reputacion, String nit ) {
-	super(id,nombre,email,login,password,saldo);
+	super(id,nombre,email,login,password,saldo,"PROMOTOR");
 	if (reputacion<0) throw new IllegalArgumentException("La reputacion no puede ser menor a 0");
 	this.reputacion= reputacion;
 	this.nit=Objects.requireNonNull(nit,"nit");

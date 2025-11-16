@@ -7,8 +7,8 @@ public class SistemaCliente extends SubSistema {
 
     private Scanner sc = new Scanner(System.in);
 
-    public SistemaCliente(Cliente cliente) {
-        super(cliente);
+    public SistemaCliente(Cliente usuarioActual) {
+        super(usuarioActual);
     }
 
     @Override

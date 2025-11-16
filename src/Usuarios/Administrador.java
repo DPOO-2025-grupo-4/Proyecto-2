@@ -1,20 +1,17 @@
 package Usuarios;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
+import Eventos.Evento;
 import Eventos.Finanzas;
-import Eventos.Oferta;
-import Logs.LogSystem;
-import Negociaciones.RepositorioOferta;
+import Eventos.Venue;
 import Tiquetes.Tiquete_individual;
 
 public class Administrador extends Usuario {
 	public Administrador(String id, String nombre, String email, String login, String password,double saldo) {
-		super(id, nombre, email, login, password, saldo);
+		super(id, nombre, email, login, password, saldo, "ADMINISTRADOR");
 	}
-	@Override
-	public boolean esAdmin() { 
-		return true; }
 	 
 	 public void autorizarReembolso(Tiquete_individual tiquete, double monto) {
 	        Objects.requireNonNull(tiquete, "tiquete");
@@ -26,18 +23,6 @@ public class Administrador extends Usuario {
 	 public double consultarFinanzas(Finanzas finanzas) {
 	        Objects.requireNonNull(finanzas, "finanzas");
 	        return finanzas.calcularGananciasTiquetera(); 
-	 }
-	     public void eliminarOferta(Oferta oferta, RepositorioOferta repo) {
-	         repo.eliminar(oferta); 
-
-	         LogSystem.registrar("BORRADO_OFERTA","Admin " + getLogin()+ " eliminó oferta " + oferta.getId()+ " sobre " + LogSystem.describirTiquete(oferta.getTiquete())+ " (precio inicial " + oferta.getPrecioInicial()+ ", precio actual " + oferta.getPrecioActual() + ")");
-	     }
-
-	     public void consultarLog() {
-	         for (String linea : LogSystem.obtenerRegistros()) {
-	             System.out.println(linea);
-	         }
-	     }
 	 }
 
 }

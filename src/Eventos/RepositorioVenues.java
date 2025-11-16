@@ -1,31 +1,40 @@
 package Eventos;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RepositorioVenues implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Map<Integer, Venue> venuesActivos;
-    private Map<Integer, Venue> venuesInactivos;
+    private Map<String, ArrayList<Venue>> venues;
     private static final String ARCHIVO = "Archivos_Persistidos/ARCHIVO_VENUES.dat";
 
     public RepositorioVenues() {
-        venuesActivos = new HashMap<>();
-        venuesInactivos = new HashMap<>();
+        venues = new HashMap<String, ArrayList<Venue>>();
     }
 
-    public void agregarVenueActivo(Venue venue) {
-        venuesActivos.put(venue.getIdVenue(), venue);
+    public void agregarVenue(Venue venue) {
+    	List<Venue> lista = venues.get(venue.getEstado());
+    	if(lista == null) {
+			ArrayList<Venue> nuevaLista = new ArrayList<Venue>();
+			nuevaLista.add(venue);
+			venues.put(venue.getEstado(), nuevaLista);
+		}
+		else {
+			lista.add(venue);
+		}
     }
 
-    public void agregarVenueInactivo(Venue venue) {
-        venuesInactivos.put(venue.getIdVenue(), venue);
-    }
     public void aprobarVenue(Venue venue) {
-    	int id = venue.getIdVenue();
-        venuesInactivos.remove(id);
-        venuesActivos.put(id, venue);
+    	
     }
 
     public void desactivarVenue(Venue venue) {

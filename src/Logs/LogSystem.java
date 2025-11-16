@@ -8,6 +8,9 @@ import java.util.List;
 
 import Tiquetes.Tiquete_individual;
 import Tiquetes.Tiquetes_multiples;
+import uniandes.dpoo.tiquetes.PaqueteDeluxe;
+import uniandes.dpoo.tiquetes.TiqueteIndividual;
+import uniandes.dpoo.tiquetes.TiqueteMultipleEvento;
 import Tiquetes.Paquete_deluxe;
 
 public class LogSystem {
@@ -28,7 +31,7 @@ public class LogSystem {
     }
 
 
-    public static String describirTiquete(Tiquete_individual t) {
+    public static String describirTiquete(TiqueteIndividual t) {
         if (t == null) return "(tiquete individual null)";
         String tipoEvento = "";
         String venue = "";
@@ -45,14 +48,14 @@ public class LogSystem {
                 + ", venue=" + venue + "}";
     }
 
-    public static String describirTiquete(Tiquetes_multiples t) {
+    public static String describirTiquete(TiqueteMultipleEvento t) {
         if (t == null) return "(tiquetes multiples null)";
         return "TiquetesMultiples{id=" + t.getId()
                 + ", cantidad=" + t.getCantidad()
                 + ", precioTotal=" + t.getPrecioTotal() + "}";
     }
 
-    public static String describirTiquete(Paquete_deluxe p) {
+    public static String describirTiquete(PaqueteDeluxe p) {
         if (p == null) return "(paquete deluxe null)";
         return "PaqueteDeluxe{id=" + p.getId()
                 + ", descripcion=" + p.getDescripcion()

@@ -1,0 +1,26 @@
+{
+  "administradores": {
+    "jsantanilla": {
+      "id": 1,
+      "nombre": "Johan ",
+      "email": "jsantanilla@",
+      "login": "jsantanilla",
+      "password": "Prueba9",
+      "saldo": 0.0,
+      "fechaRegistro": "2025-11-16T20:19:42.903981200",
+      "rol": "ADMINISTRADOR"
+    },
+    "jsantanilla2": {
+      "id": 1,
+      "nombre": "Johan2",
+      "email": "jsantanilla@",
+      "login": "jsantanilla2",
+      "password": "prueba10",
+      "saldo": 0.0,
+      "fechaRegistro": "2025-11-16T20:27:16.624648500",
+      "rol": "ADMINISTRADOR"
+    }
+  },
+  "promotores": {},
+  "clientes": {}
+}

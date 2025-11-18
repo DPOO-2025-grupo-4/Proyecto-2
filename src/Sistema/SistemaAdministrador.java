@@ -1,29 +1,48 @@
 package Sistema;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-import Tiquetes.Tiquete_individual;
+
+import Eventos.Evento;
+import Eventos.RepositorioEventos;
+import Eventos.RepositorioVenues;
+import Eventos.Venue;
+import tiquetes.TiqueteIndividual;
 import Usuarios.Administrador;
+import Usuarios.Promotor;
+import Usuarios.RepositorioUsuarios;
 import Usuarios.Usuario;
 
 public class SistemaAdministrador extends SubSistema {
 
     private Scanner sc = new Scanner(System.in);
-
-    public SistemaAdministrador(Administrador admin) {
+    private RepositorioUsuarios repu;
+    private RepositorioEventos repe;
+    private RepositorioVenues repv;
+    private Propuestas repp;
+ 
+    public SistemaAdministrador(Administrador admin, RepositorioUsuarios repu, RepositorioVenues repv, RepositorioEventos repe, Propuestas repp) {
         super(admin);
+        this.repu = repu;
+        this.repe = repe;
+        this.repv = repv;
+        this.repp = repp;
     }
 
     @Override
     public void mostrarMenu() {
-        int opcion = -1;
-
+        int opcion;
         do {
-            System.out.println("\n=== MENÚ ADMINISTRADOR ===");
-            System.out.println("1. Crear evento");
-            System.out.println("2. Cancelar evento");
-            System.out.println("3. Ver finanzas generales");
-            System.out.println("4. Autorizar reembolso");
+            System.out.println("MENÚ ADMINISTRADOR");
+            System.out.println("1. Cancelar evento");
+            System.out.println("2. Ver finanzas tiquetera");
+            System.out.println("3. Autorizar reembolso");
+            System.out.println("4. Aprobar Venue");
+            System.out.println("5. Bloquear Promotor");
+            System.out.println("6. Añadir Promotor");
+            System.out.println("7. Aceptar Promotor");
+            System.out.println("8. Aprobar cancelacion evento");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
             
@@ -31,56 +50,131 @@ public class SistemaAdministrador extends SubSistema {
             sc.nextLine(); 
 
             switch (opcion) {
-                case 1 -> crearEvento();
-                case 2 -> cancelarEvento();
-                case 3 -> verFinanzas();
-                case 4 -> ejecutarAutorizarReembolso();
-                case 0 -> System.out.println("Saliendo del sistema de administración...");
-                default -> System.out.println("Opción inválida.");
+                case 1 : cancelarEvento();
+                break;
+                case 2 :verFinanzas();
+                break;
+                //case 3: aprobarReembolso();
+                //break;
+                case 4 : aprobarVenue();
+                break;
+                case 5 : bloquearPromotor();
+                break;
+                case 6 : añadirPromotor();
+                break;
+                case 7 : aceptarPromotor();
+                break;
+                case 8 :aprobarCancelacionEvento();
+                break;
+                case 9: crearVenue();
+                break;
+                case 0 : System.out.println("Saliendo del sistema de administración...");
+                salir();
+                break;
+                default : System.out.println("Opción inválida.");
             }
 
         } while (opcion != 0);
     }
 
-    private void crearEvento() {
-        System.out.println("→ Creando evento (simulación)...");
-    }
 
-    private void cancelarEvento() {
-        System.out.println("→ Cancelando evento (simulación)...");
+    private void aprobarCancelacionEvento() {
+		System.out.println(repp.getCancelacionesPropuestas());
+		System.out.println("Ingresa el id del evento a cancelar: ");
+		int id = sc.nextInt();
+		Evento evento = repp.getEventoPropuesto(id);
+		repp.aceptarCancelacionEvento(id);
+		repe.cambiarEstadoEvento(evento, "CANCELADO");
+	}
+
+	private void aceptarPromotor() {
+		System.out.println(repp.getPromotoresPropuestos());
+		System.out.println("Ingresa el id del promotor para aceptar: ");
+		int id = sc.nextInt();
+		sc.nextLine();
+		Promotor prom = repp.getPromotorPropuesto(id);
+		repu.agregarUsuario(prom);
+		repp.aceptarPromotor(id);
+		
+	}
+
+	private void añadirPromotor() {
+		System.out.println("Ingrese el nombre");
+		String nombre = sc.nextLine();
+		System.out.println("Ingrese el Email");
+		String mail = sc.nextLine();
+		System.out.println("Ingrese el usuario login");
+		String login = sc.nextLine();
+		System.out.println("Ingrese la contraseña");
+		String password = sc.nextLine();
+		System.out.println("Ingrese la reputacion conocida del promotor");
+		int reputacion = sc.nextInt();
+		System.out.println("Ingrese el NIT");
+		String NIT = sc.nextLine();
+		Usuario nuevoProm = new Promotor(nombre, mail, login, password, reputacion, NIT);
+		repu.agregarUsuario(nuevoProm);
+	}
+
+	private void bloquearPromotor() {
+		System.out.println("Ingrese el login del promotor");
+		String login = sc.nextLine();
+		repu.eliminarUsuario(login, "PROMOTOR");
+	}
+
+	private void cancelarEvento() {
+		System.out.println(repe.getEventosActivos());
+		System.out.println("Ingrese el id del evento a cancelar");
+		int id = sc.nextInt();
+        repe.cambiarEstadoEvento(repe.getEventoActivo(id), "CANCELADO");
     }
 
     private void verFinanzas() {
-        System.out.println("→ Mostrando reporte de finanzas...");
+    	//De momento no hay finanzas
+    }
+    private void aprobarVenue() {
+    	System.out.println(repv.getVenuesInactivos());
+    	System.out.println("Ingrese el id del venue a aprobar");
+		int id = sc.nextInt();
+		repv.aprobarVenue(repv.getVenueActivo(id));
+    }
+    public void crearVenue() {
+    	boolean datosCorrectos = false;
+    	do {
+    		System.out.println("Ingrese el tipo de venue: ");
+    		String tipo = sc.nextLine();
+    		System.out.println("Ingrese la latitud del venue: ");
+    		int latitud = sc.nextInt();
+    		sc.nextLine();
+    		System.out.println("Ingrese la longitud del venue: ");
+    		int longitud = sc.nextInt();
+    		sc.nextLine();
+    		System.out.println("Ingrese la capacidad maxima del venue: ");
+    		int capacidad = sc.nextInt();
+    		sc.nextLine();
+    		System.out.println("Ingrese las restricciones del venue: ");
+    		String restricciones = sc.nextLine();
+    		System.out.println("Ingrese el nombre del venue: ");
+    		String nombre = sc.nextLine();
+    		try {
+    			
+    			Venue nuevo = new Venue(tipo, latitud, longitud, capacidad, restricciones, nombre, "ACTIVO");
+    			datosCorrectos = true;
+    			repv.agregarVenue(nuevo);
+    		} catch (Exception e) {
+    			System.out.println("La capacidad del venue se dio negativa, vuelva a intentar");
+    		}
+    	}while(datosCorrectos == false);	
     }
 
-  
-    private void ejecutarAutorizarReembolso() {
-        System.out.print("Ingrese ID del tiquete a reembolsar: ");
-        String id = sc.nextLine();
+	@Override
+	public void salir() {
+		repu.guardar();
+		repv.guardar();
+		repe.guardar();
+		repp.guardar();
+	}
 
-
-        Tiquete_individual tiquete = null;
-
-        if (tiquete == null) {
-            System.out.println("No se encontró un tiquete con el ID proporcionado.");
-            return;
-        }
-
-        System.out.print("Ingrese el monto a reembolsar: ");
-        double monto = sc.nextDouble();
-        sc.nextLine();
-
-        try {
-            autorizarReembolso(tiquete, monto);
-            System.out.println("✅ Reembolso autorizado correctamente.");
-        } catch (Exception e) {
-            System.out.println("❌ Error al autorizar reembolso: " + e.getMessage());
-        }
-    }
-
-
-    public void autorizarReembolso(Tiquete_individual tiquete, double monto) {
+    /*public void autorizarReembolso(Tiquete_individual tiquete, double monto) {
         Objects.requireNonNull(tiquete, "El tiquete no puede ser nulo");
         if (monto <= 0) throw new IllegalArgumentException("El monto debe ser mayor a 0");
 
@@ -93,5 +187,5 @@ public class SistemaAdministrador extends SubSistema {
         } else {
             System.out.println("⚠️ El tiquete no tiene un dueño actual. No se acreditó saldo.");
         }
-    }
+    }*/
 }

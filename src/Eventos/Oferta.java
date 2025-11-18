@@ -5,21 +5,19 @@ import java.time.LocalDate;
 import Usuarios.Promotor;
 
 public class Oferta {
-	private LocalDate fechaInicio;
-	private LocalDate fechaFin;
+	private String fechaInicio;
+	private String fechaFin;
 	private int porcentajeDescuento;
 	private boolean esActiva;
 	private Localidad localidadAsociada;
-	private Promotor promotor;
 	
 	
-	public Oferta(LocalDate fechaInicio, LocalDate fechaFin, int porcentajeDescuento,Promotor promotor, Localidad localidad) {
+	public Oferta(String fechaInicio, String fechaFin, int porcentajeDescuento, Localidad localidad) {
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.porcentajeDescuento = porcentajeDescuento;
 		esActiva = true;
 		localidadAsociada = localidad;
-		this.promotor = promotor;
 	}
 	
 	public double aplicarDescuento() {
@@ -28,22 +26,22 @@ public class Oferta {
 		return rst;
 	}
 
-	public LocalDate getFechaInicio() {
+	public String getFechaInicio() {
 		return fechaInicio;
 	}
 
 
-	public void setFechaInicio(LocalDate fechaInicio) {
+	public void setFechaInicio(String fechaInicio) {
 		this.fechaInicio = fechaInicio;
 	}
 
 
-	public LocalDate getFechaFin() {
+	public String getFechaFin() {
 		return fechaFin;
 	}
 
 
-	public void setFechaFin(LocalDate fechaFin) {
+	public void setFechaFin(String fechaFin) {
 		this.fechaFin = fechaFin;
 	}
 
@@ -58,7 +56,7 @@ public class Oferta {
 	}
 
 
-	public boolean isEsActiva() {
+	public boolean esActiva() {
 		return esActiva;
 	}
 	public void desactivarDescuento() {
@@ -70,10 +68,6 @@ public class Oferta {
 		return localidadAsociada;
 	}
 
-
-	public void setLocalidadAsociada(Localidad localidadAsociada) {
-		this.localidadAsociada = localidadAsociada;
-	}
 	
 	
 }

@@ -1,30 +1,31 @@
 package Usuarios;
 import java.time.LocalDateTime;
 import java.util.Objects;
-
+import Usuarios.RepositorioUsuarios;
 
 
 
 public abstract class Usuario {
-protected String id;
+protected int id;
 protected String nombre;
 protected String email;
 protected String login;
 protected String password;
 protected double saldo;
-protected  LocalDateTime fechaRegistro;
+protected  String fechaRegistro;
+protected String rol;
+private static int idSecuencial = 1;
 
-public Usuario (String id, String nombre, String email, String login, String password, double saldo) {
+public Usuario() {}
+public Usuario (String nombre, String email, String login, String password, String rol) {
+	this.id = idSecuencial;
 	this.nombre=Objects.requireNonNull(nombre,"nombre");
 	this.email=Objects.requireNonNull(email,"email");
 	this.login=Objects.requireNonNull(login,"login");
 	this.password=Objects.requireNonNull(password,"password");
-	this.saldo= saldo;
-	this.fechaRegistro= LocalDateTime.now();
-
-}
-public boolean autenticar(String login, String password) {
-	return Objects.equals(this.login, login) && Objects.equals(this.password, password);
+	this.saldo= 0;
+	this.fechaRegistro = LocalDateTime.now().toString();
+	this.rol = rol;
 }
 
 public void acreditarSaldo(double monto) {
@@ -36,10 +37,7 @@ public void debitarSaldo(double monto) {
 	if (monto > this.saldo) throw new IllegalStateException("Saldo insuficiente");
 	this.saldo -= monto;
 }
-public boolean esAdmin() {
-    return false;
-}
-public String getId() {
+public int getId() {
 	return id;
 }
 public String getNombre() {
@@ -60,12 +58,9 @@ public String getLogin() {
 public void setLogin(String login) {
 	this.login = Objects.requireNonNull(login,"login");
 }
-public LocalDateTime getFechaRegistro() {
+public String getFechaRegistro() {
 	return fechaRegistro;
 }
-public void setFechaRegistro(LocalDateTime fechaRegistro) {
-	this.fechaRegistro = (fechaRegistro != null) ? fechaRegistro : LocalDateTime.now();
-	}
 public double getSaldo() {
 	return saldo;
 }
@@ -74,6 +69,9 @@ public String getPassword() {
 }
 public void setPassword(String password) {
 	this.password = password;
+}
+public String getRol() {
+	return rol;
 }
 
 }

@@ -7,8 +7,8 @@ public class SistemaCliente extends SubSistema {
 
     private Scanner sc = new Scanner(System.in);
 
-    public SistemaCliente(Cliente cliente) {
-        super(cliente);
+    public SistemaCliente(Cliente usuarioActual) {
+        super(usuarioActual);
     }
 
     @Override
@@ -26,12 +26,13 @@ public class SistemaCliente extends SubSistema {
             sc.nextLine();
 
             switch (opcion) {
-                case 1 -> verEventos();
-                case 2 -> comprarTiquete();
-                case 3 -> transferirTiquete();
-                case 4 -> consultarSaldo();
-                case 0 -> System.out.println("Saliendo del sistema de cliente...");
-                default -> System.out.println("Opción inválida.");
+                case 1 : verEventos();
+                case 2 : comprarTiquete();
+                case 3 : transferirTiquete();
+                case 4 : consultarSaldo();
+                case 0 : salir();
+                		System.out.println("Saliendo del sistema de cliente...");
+                default : System.out.println("Opción inválida.");
             }
 
         } while (opcion != 0);
@@ -53,4 +54,10 @@ public class SistemaCliente extends SubSistema {
         Cliente c = (Cliente) usuario;
         System.out.println("Tu saldo actual es: $" + c.getSaldo());
     }
+
+	@Override
+	public void salir() {
+		// TODO Auto-generated method stub
+		
+	}
 }

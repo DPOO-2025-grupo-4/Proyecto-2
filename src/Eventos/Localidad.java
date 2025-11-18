@@ -1,7 +1,12 @@
 package Eventos;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import tiquetes.TiqueteIndividual;
 
 public class Localidad {
 	private int idLocalidad = 0;
@@ -10,42 +15,41 @@ public class Localidad {
 	private boolean esNumerada;
 	private boolean disponible;
 	private int vendidos = 0;
-	private List<Asiento> asientosDisponibles;
-	private List<Asiento> asientosOcupados;
-	private Finanzas finanzas;
+	private Map<String, TiqueteIndividual> disponibles;
+	private Map<String, TiqueteIndividual> ocupados;
 	private Evento eventoAsociado;
 	private int numAsiento = 1;
 	private char fila = 'A';
 	private int capacidad;
 	private Oferta oferta = null;
 	
-	public Localidad(Evento evento, double precio, String caracteristicas, boolean esNumerada, boolean disponible, int capacidad)throws Exception 
+	
+	public Localidad(Evento evento, double precio, String caracteristicas, boolean esNumerada, int capacidad, int asientoXFila) 
 	{
 		this.precio = precio;
 		this.caracteristicas = caracteristicas;
-		this.esNumerada = esNumerada;
-		this.disponible = disponible;
+		disponibles = new TreeMap<String, TiqueteIndividual>();
+		ocupados = new TreeMap<String, TiqueteIndividual>();
 		if (esNumerada == true) {
-			this.asientosDisponibles = new ArrayList<Asiento>();
-			this.asientosOcupados = new ArrayList<Asiento>();
+			agregarTiquetes(asientoXFila);
 		}
-		this.finanzas = new Finanzas(this.precio, this, oferta);
+		else {
+			agregarTiquetes();
+		}
+		this.esNumerada = esNumerada;
+		disponible = true;
 		this.eventoAsociado = evento;
 		this.capacidad = capacidad;
-	}
-	public List<Asiento>getAsientosDisponibles() {
-		return asientosDisponibles;
-	}
-	public List<Asiento>getAsientosOcupados() {
-		return asientosOcupados;
+		
 	}
 	public void asociarOferta(Oferta oferta) {
 		this.oferta = oferta;
 	}
-	public void reservar(Asiento asiento) {
+	public void reservar(TiqueteIndividual tiquete) {
+		String id = tiquete.getId();
 		if(esNumerada == true) {
-			asientosDisponibles.remove(asiento);
-			asientosOcupados.add(asiento);
+			disponibles.remove(id);
+			ocupados.put(id, tiquete);
 			vendidos ++;
 		}
 		else {
@@ -55,10 +59,11 @@ public class Localidad {
 		}
 		}
 	}
-	public void liberar(Asiento asiento) {
+	public void liberar(TiqueteIndividual tiquete) {
+		String id = tiquete.getId();
 		if(esNumerada == true) {
-			asientosOcupados.remove(asiento);
-			asientosDisponibles.add(asiento);
+			ocupados.remove(id);
+			disponibles.put(id, tiquete);
 			vendidos --;
 		}
 		else {
@@ -81,32 +86,29 @@ public class Localidad {
 			return false;
 		}
 	}
-	public void agregarAsiento(Asiento asiento, int asientoXFila) throws Exception{
-		if(asientosDisponibles.size() < capacidad) {
-			asiento.setNumeroAsiento(numAsiento);
-			
-			asiento.setLocalidadAsociada(this);
-			
-			asientosDisponibles.add(asiento);
-			numAsiento ++;
-			if (numAsiento > asientoXFila) {
-				numAsiento = 1;
-				this.fila ++;
-			} 
-		}
-		else {
-			throw new Exception("Capacidad de la localidad Excedida");
-		}
+	public void agregarTiquetes(){
 		
+		for(int i = 0; i < capacidad; i++) {
+			TiqueteIndividual nuevo = new TiqueteIndividual(eventoAsociado, this, eventoAsociado.getPorcentajeServicio(), eventoAsociado.getCobroEmision());
+			disponibles.put(nuevo.getId(), nuevo);
+		}
+	}
+	public void agregarTiquetes(int asientoXFila) {//segun el asiento x fila generar todos los asientos hasta llegar a una capacidad maxima y añadirlos todos en asientos disponibles
+		for(int i = 0; i < capacidad; i++) {
+			TiqueteIndividual nuevo = new TiqueteIndividual(eventoAsociado, this, eventoAsociado.getPorcentajeServicio(), eventoAsociado.getCobroEmision());
+			disponibles.put(nuevo.getId(), nuevo);
+			numAsiento ++;
+			if(i == asientoXFila) {
+				fila ++;
+			}
+			
+		}
 	}
 	public boolean getDisponible() {
 		return disponible;
 	}
 	public int getIdLocalidad() {
 		return idLocalidad;
-	}
-	public void setIdLocalidad(int idLocalidad) {
-		this.idLocalidad = idLocalidad;
 	}
 	public double getPrecio() {
 		return precio;
@@ -126,29 +128,11 @@ public class Localidad {
 	public void setDisponible(boolean disponible) {
 		this.disponible = disponible;
 	}
-	public Finanzas getFinanzas() {
-		return finanzas;
-	}
-	public void setFinanzas(Finanzas finanzas) {
-		this.finanzas = finanzas;
-	}
 	public Evento getEventoAsociado() {
 		return eventoAsociado;
 	}
 	public void setEventoAsociado(Evento eventoAsociado) {
 		this.eventoAsociado = eventoAsociado;
-	}
-	public int getNumAsiento() {
-		return numAsiento;
-	}
-	public void setNumAsiento(int numAsiento) {
-		this.numAsiento = numAsiento;
-	}
-	public char getFila() {
-		return fila;
-	}
-	public void setFila(char fila) {
-		this.fila = fila;
 	}
 	public int getCapacidad() {
 		return capacidad;
@@ -161,6 +145,9 @@ public class Localidad {
 	}
 	public void setOferta(Oferta oferta) {
 		this.oferta = oferta;
+	}
+	public void setIdLocalidad(int idLocalidad){
+		this.idLocalidad = idLocalidad;
 	}
 
 

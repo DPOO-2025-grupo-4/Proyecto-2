@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
+import Eventos.Evento;
 import Eventos.RepositorioEventos;
 import Eventos.RepositorioVenues;
 import Tiquetes.Tiquete_individual;
@@ -18,12 +19,14 @@ public class SistemaAdministrador extends SubSistema {
     private RepositorioUsuarios repu;
     private RepositorioEventos repe;
     private RepositorioVenues repv;
+    private Propuestas repp;
  
-    public SistemaAdministrador(Administrador admin, RepositorioUsuarios repu, RepositorioVenues repv, RepositorioEventos repe) {
+    public SistemaAdministrador(Administrador admin, RepositorioUsuarios repu, RepositorioVenues repv, RepositorioEventos repe, Propuestas repp) {
         super(admin);
         this.repu = repu;
         this.repe = repe;
         this.repv = repv;
+        this.repp = repp;
     }
 
     @Override
@@ -33,12 +36,12 @@ public class SistemaAdministrador extends SubSistema {
             System.out.println("MENÚ ADMINISTRADOR");
             System.out.println("1. Cancelar evento");
             System.out.println("2. Ver finanzas tiquetera");
-            //System.out.println("3. Autorizar reembolso");
+            System.out.println("3. Autorizar reembolso");
             System.out.println("4. Aprobar Venue");
             System.out.println("5. Bloquear Promotor");
             System.out.println("6. Añadir Promotor");
-            //System.out.println("7. Aceptar Promotor");
-            //System.out.println("8. Aprobar cancelacion evento");
+            System.out.println("7. Aceptar Promotor");
+            System.out.println("8. Aprobar cancelacion evento");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
             
@@ -48,14 +51,20 @@ public class SistemaAdministrador extends SubSistema {
             switch (opcion) {
                 case 1 : cancelarEvento();
                 break;
-                //case 2 -> verFinanzas();
+                case 2 :verFinanzas();
+                break;
+                //case 3: aprobarReembolso();
+                //break;
                 case 4 : aprobarVenue();
                 break;
                 case 5 : bloquearPromotor();
                 break;
                 case 6 : añadirPromotor();
                 break;
-                //case 7 -> aceptarPromotor();
+                case 7 : aceptarPromotor();
+                break;
+                case 8 :aprobarCancelacionEvento();
+                break;
                 
                 case 0 : System.out.println("Saliendo del sistema de administración...");
                 salir();
@@ -67,9 +76,24 @@ public class SistemaAdministrador extends SubSistema {
     }
 
 
-    private Object aceptarPromotor() {
-		// TODO Auto-generated method stub
-		return null;
+    private void aprobarCancelacionEvento() {
+		System.out.println(repp.getCancelacionesPropuestas());
+		System.out.println("Ingresa el id del evento a cancelar: ");
+		int id = sc.nextInt();
+		Evento evento = repp.getEventoPropuesto(id);
+		repp.aceptarCancelacionEvento(id);
+		repe.cambiarEstadoEvento(evento, "CANCELADO");
+	}
+
+	private void aceptarPromotor() {
+		System.out.println(repp.getPromotoresPropuestos());
+		System.out.println("Ingresa el id del promotor para aceptar: ");
+		int id = sc.nextInt();
+		sc.nextLine();
+		Promotor prom = repp.getPromotorPropuesto(id);
+		repu.agregarUsuario(prom);
+		repp.aceptarPromotor(id);
+		
 	}
 
 	private void añadirPromotor() {

@@ -21,6 +21,7 @@ public class sistemaPrincipal {
     private RepositorioUsuarios repu;
     private RepositorioVenues repv;
     private RepositorioEventos repe;
+    private Propuestas repp;
     
     
 	public static void main(String[] args) {
@@ -33,6 +34,7 @@ public class sistemaPrincipal {
 		this.repu = RepositorioUsuarios.cargar();
 		this.repv = RepositorioVenues.cargar();
 		this.repe = RepositorioEventos.cargar();
+		this.repp = Propuestas.cargar();
 		boolean opcionCorrecta = false;
 		System.out.println("Bienvenido a BoletaMaster");
 		
@@ -90,7 +92,7 @@ public class sistemaPrincipal {
 		        	Usuario admin = new Administrador(nombre, email,login,password);
 		        	repu.agregarUsuario(admin);
 		        	usuarioActual = admin;
-		        	subSistema = new SistemaAdministrador((Administrador) usuarioActual, repu, repv, repe);
+		        	subSistema = new SistemaAdministrador((Administrador) usuarioActual, repu, repv, repe, repp);
 		        }
 		        else {
 		        	System.out.println("Datos incorrectos, intente de nuevo");
@@ -105,9 +107,11 @@ public class sistemaPrincipal {
 		        if(email.contains("@") && repu.getUsuario(login) == null) {
 		        	datosCorrectos = true;
 		        	Usuario promo = new Promotor(nombre, email,login,password,0,nit);
-		        	repu.agregarUsuario(promo);
+		        	repp.agregarPropuestapromotor((Promotor) promo);
+		        	//repu.agregarUsuario(promo);
 		        	usuarioActual = promo;
-		        	subSistema = new SistemaPromotor((Promotor) usuarioActual);
+		        	System.out.print("El usuario ya quedo agregado, espera a que un administrador te acepte");
+		        	salir();
 		        }
 		        else {
 		        	System.out.println("Datos incorrectos, intente de nuevo");
@@ -157,17 +161,25 @@ public class sistemaPrincipal {
 		}
 		String rol = usuarioActual.getRol();
 		if(rol.equals("ADMINISTRADOR")) {
-			subSistema = new SistemaAdministrador((Administrador) usuarioActual, repu, repv, repe);
+			subSistema = new SistemaAdministrador((Administrador) usuarioActual, repu, repv, repe,repp);
 		}
 		else if(rol.equals("CLIENTE")) {
 			subSistema = new SistemaCliente((Cliente) usuarioActual);
 		}
 		else if(rol.equals("PROMOTOR")) {
-			subSistema = new SistemaPromotor((Promotor) usuarioActual);
+			subSistema = new SistemaPromotor((Promotor) usuarioActual, repe, repv);
 			
 		}
 		subSistema.mostrarMenu();
     }
+	
+	public void salir() {
+		repu.guardar();
+		repv.guardar();
+		repe.guardar();
+		repp.guardar();
+		
+	}
 
     
 }

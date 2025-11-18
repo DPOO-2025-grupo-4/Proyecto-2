@@ -10,4 +10,9 @@ public abstract class SubSistema {
     }
 
     public abstract void mostrarMenu();
+
+	public void salir() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -7,9 +7,6 @@ public abstract class Tiquete {
 
     protected String id;
     protected Evento evento;
-    protected double precioBase;
-    protected double porcentajeServicio;
-    protected double cobroEmision;
     protected Usuario duenoActual;
     protected boolean transferible = true;
 
@@ -25,28 +22,13 @@ public abstract class Tiquete {
         return duenoActual;
     }
 
-    public void setDuenoActual(Usuario duenoActual) {
-        this.duenoActual = duenoActual;
-    }
-
-    public double getPrecioBase() {
-        return precioBase;
-    }
-
-    public double getPorcentajeServicio() {
-        return porcentajeServicio;
-    }
-
-    public double getCobroEmision() {
-        return cobroEmision;
-    }
-
-    public double getPrecioTotal() {
-        double recargoServicio = (precioBase * porcentajeServicio) / 100;
-        return precioBase + recargoServicio + cobroEmision;
+    public void setDuenoActual(Usuario usuario) {
+        this.duenoActual = usuario;
     }
 
     public boolean esTransferible() {
         return transferible;
     }
+
+    public abstract double getPrecioTotal();
 }

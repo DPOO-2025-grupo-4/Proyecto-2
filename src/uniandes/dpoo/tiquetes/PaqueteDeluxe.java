@@ -10,7 +10,7 @@ public class PaqueteDeluxe extends TiqueteMultiple {
     private String descripcionBeneficios;
 
     public PaqueteDeluxe(List<TiqueteIndividual> tiquetes,double precioBasePaquete,double porcentajeServicio,double cobroEmision,Usuario comprador,String descripcionBeneficios) {
-        super(tiquetes, precioBasePaquete, porcentajeServicio, cobroEmision, comprador);
+        super(tiquetes, comprador);
         this.descripcionBeneficios = descripcionBeneficios;
         this.transferible = false;
     }

@@ -7,7 +7,7 @@ import Usuarios.Usuario;
 
 public class PaseTemporada extends TiqueteMultiple {
 
-    public PaseTemporada(List<TiqueteIndividual> tiquetes,double precioBasePaquete,double porcentajeServicio,double cobroEmision,Usuario comprador) {
-        super(tiquetes, precioBasePaquete, porcentajeServicio, cobroEmision, comprador);
+    public PaseTemporada(List<TiqueteIndividual> tiquetes,Usuario comprador) {
+        super(tiquetes,  comprador);
     }
 }

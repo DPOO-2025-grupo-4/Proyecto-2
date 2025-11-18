@@ -19,9 +19,6 @@ public class TiqueteIndividual extends Tiquete {
         this.evento = evento;
         this.localidad = localidad;
         this.asiento = asiento;
-        this.porcentajeServicio = porcentajeServicio;
-        this.cobroEmision = cobroEmision;
-        this.precioBase = localidad.getPrecio();
         this.duenoActual = comprador;
         this.reembolsado = false;
     }
@@ -44,4 +41,13 @@ public class TiqueteIndividual extends Tiquete {
         }
         this.reembolsado = true;
     }
-}
+        @Override
+        public double getPrecioTotal() {
+            double precioBase = localidad.getPrecio();
+            double porcentaje = evento.getPorcentajeAdicional(); // debe existir en Evento
+            double emision = evento.getCobroEmision();           // debe existir en Evento
+
+            double recargo = precioBase * porcentaje / 100.0;
+            return precioBase + recargo + emision;
+        }
+    }
